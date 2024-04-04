@@ -7,6 +7,7 @@ import {DomainService} from '../../service';
 import {InternationalizationService} from '../../service/internationalization.service';
 import {ModalNotificationSendComponent} from '../modal/modal-notification-send/modal-notification-send.component';
 import {DatePipe} from '@angular/common';
+import {UserDataService} from '../../service/userdata.service';
 
 @Component({
     selector: 'app-navbar',
@@ -34,7 +35,8 @@ export class NavbarComponent implements OnInit {
                 private translate: TranslateService,
                 private datePipe: DatePipe,
                 private languageService: InternationalizationService,
-                private domainService: DomainService) {
+                private domainService: DomainService,
+                private userDataService: UserDataService) {
     }
 
     useLanguage(language: string) {
@@ -101,4 +103,12 @@ export class NavbarComponent implements OnInit {
             && this.authService.getDomains().length === 1 // no roles in other domains
     }
 
+    public shouldDisplaySubscriptions() {
+        let currentDomainId = undefined;
+        const globalDomainId = this.domainService.getGlobalDomainId();
+        this.userDataService.selectedDomainId.subscribe(id => currentDomainId = id)
+        const isGlobal = currentDomainId === globalDomainId
+        const isSystemAdmin = this.authService.hasDomainRole(globalDomainId, 'ROLE_SYSTEM_ADMIN')
+        return !isGlobal ? true : isSystemAdmin
+    }
 }
