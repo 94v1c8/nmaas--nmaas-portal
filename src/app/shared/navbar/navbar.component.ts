@@ -8,6 +8,7 @@ import {InternationalizationService} from '../../service/internationalization.se
 import {ModalNotificationSendComponent} from '../modal/modal-notification-send/modal-notification-send.component';
 import {DatePipe} from '@angular/common';
 import {UserDataService} from '../../service/userdata.service';
+import {ServiceUnavailableService} from '../../service-unavailable/service-unavailable.service';
 
 @Component({
     selector: 'app-navbar',
@@ -36,7 +37,8 @@ export class NavbarComponent implements OnInit {
                 private datePipe: DatePipe,
                 private languageService: InternationalizationService,
                 private domainService: DomainService,
-                private userDataService: UserDataService) {
+                private userDataService: UserDataService,
+                private serviceAvailability: ServiceUnavailableService) {
     }
 
     useLanguage(language: string) {
@@ -52,6 +54,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isServiceAvailable = this.serviceAvailability.isServiceAvailable;
         this.getSupportedLanguages();
         if (this.authService.isLogged()) {
             if (this.authService.hasRole('ROLE_SYSTEM_ADMIN')) {
