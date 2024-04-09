@@ -143,9 +143,7 @@ export class UserPrivilegesComponent extends BaseComponent implements OnInit {
     }
 
     public getDomainName(domainId: number): Observable<string> {
-        console.warn('retrieving domain name')
         if (this.domainCache.hasData(domainId)) {
-            console.warn('hasData')
             return of(this.domainCache.getData(domainId).name);
         }
     }
