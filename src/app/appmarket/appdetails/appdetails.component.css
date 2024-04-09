@@ -42,3 +42,8 @@ hr{
     cursor: default!important;
     color: gray;
 }
+
+.thumbnail{
+    border: none;
+    box-shadow: none;
+}

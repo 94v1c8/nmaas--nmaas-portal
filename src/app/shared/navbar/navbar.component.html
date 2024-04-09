@@ -113,7 +113,7 @@
                         {{ 'NAVBAR.LOGIN_REGISTER' | translate }}
                     </button>
                 </li>
-                <li>
+                <li *ngIf="isServiceAvailable">
                     <button *ngIf="router.url != '/about'" class="btn navbar-btn" [routerLink]="['/about']">
                         {{ 'NAVBAR.ABOUT' | translate }}
                     </button>
@@ -122,7 +122,7 @@
                         {{ 'NAVBAR.BACK' | translate }}
                     </button>
                 </li>
-                <li class="dropdown">
+                <li *ngIf="isServiceAvailable" class="dropdown">
                     <a style="display: inline-block" class="dropdown-toggle dropdown-lang" aria-expanded="false"
                        aria-haspopup="true" data-toggle="dropdown" href="#" role="button">
                         <img alt="language" class="lang-circle-icon" src="{{[getPathToCurrent()]}}"/>
