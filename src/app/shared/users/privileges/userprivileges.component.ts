@@ -95,24 +95,35 @@ export class UserPrivilegesComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         if (this.authService.hasRole(Role[Role.ROLE_SYSTEM_ADMIN])) {
-            this.domainService.getAll().subscribe((domains) => this.domains = domains);
+            this.domainService.getAll().subscribe((domains) => {
+                this.domains = domains
+                this.saveMultipleDomainsInCache(domains);
+            });
         } else if (this.authService.hasRole(Role[Role.ROLE_DOMAIN_ADMIN])) {
             const domainIds: number[] = this.authService.getDomainsWithRole(Role[Role.ROLE_DOMAIN_ADMIN]);
             domainIds.forEach((domainId) => {
-                this.domainService.getOne(domainId).subscribe((domain) => this.domains.push(domain));
+                this.domainService.getOne(domainId).subscribe((domain) => {
+                    this.domains.push(domain)
+                    this.saveDomainInCache(domain)
+                });
             });
+        } else {
+            this.getMyDomains();
         }
-        this.getAllDomain();
     }
 
-    public getAllDomain() {
-        this.domainService.getAll().subscribe(domains => {
-            domains.forEach(domain => {
-                if (!this.domainCache.hasData(domain.id)) {
-                    this.domainCache.setData(domain.id, domain)
-                }
-            })
-        })
+    private saveMultipleDomainsInCache(domains: Domain[]) {
+        domains.forEach(domain => this.saveDomainInCache(domain))
+    }
+
+    private saveDomainInCache(domain: Domain) {
+        if (!this.domainCache.hasData(domain.id)) {
+            this.domainCache.setData(domain.id, domain)
+        }
+    }
+
+    public getMyDomains() {
+        this.domainService.getMyDomains().subscribe(domains => this.saveMultipleDomainsInCache(domains))
     }
 
     public add(): void {
