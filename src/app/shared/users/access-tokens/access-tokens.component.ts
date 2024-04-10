@@ -28,7 +28,7 @@ export class AccessTokensComponent implements OnInit {
 
     ngOnInit() {
         this.requestForm = this.formBuilder.group({
-            name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
+            name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(16)]],
         })
 
         this.tokens = this.tokenService.getAll();
