@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AccessToken} from './access-token';
 import {AccessTokenService} from './access-token.service';
+import {ModalComponent} from '../../modal';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-access-tokens',
@@ -13,10 +15,22 @@ export class AccessTokensComponent implements OnInit {
     public tokens: Observable<AccessToken[]> = undefined;
     public tokensList: AccessToken[] = [];
 
-    constructor(private tokenService: AccessTokenService) {
+    public requestForm: UntypedFormGroup = undefined;
+
+    public newTokenName = '';
+
+    @ViewChild(ModalComponent, {static: true})
+    public readonly modal: ModalComponent;
+
+    constructor(private tokenService: AccessTokenService,
+                private formBuilder: UntypedFormBuilder) {
     }
 
     ngOnInit() {
+        this.requestForm = this.formBuilder.group({
+            name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
+        })
+
         this.tokens = this.tokenService.getAll();
         this.getData();
     }
@@ -24,36 +38,30 @@ export class AccessTokensComponent implements OnInit {
     getData() {
         this.tokensList = [];
         this.tokens.subscribe(
-            data => {
-                this.tokensList.push(...data);
-                console.log('tokens: ', data)
-            },
-            error => {
-                console.error(error);
-            }
+            data => this.tokensList.push(...data),
+            error => console.error(error)
         )
     }
 
     invalidate(id: number) {
         this.tokenService.invalidate(id).subscribe(
-            data => {
-                console.log('invalidating access token id: ' + id + ' success');
-                this.getData();
-            },
-            error => {
-                console.error(error);
-            }
+            (_) => this.getData(),
+            error => console.error(error)
         );
     }
 
     public createNewToken() {
-        console.log('trying to create new token')
-        this.tokenService.createToken().subscribe({
+        this.tokenService.createToken(this.requestForm.value.name.trim()).subscribe({
             next: val => {
-                console.log('access token created: ', val)
                 this.tokensList.push(val)
+                this.requestForm.reset();
+                this.modal.hide();
             },
             error: err => console.warn(err)
         })
+    }
+
+    get name() {
+        return this.requestForm.get('name');
     }
 }
