@@ -94,12 +94,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <ng-container *ngIf="getStateAsEnum(appInstanceStatus?.state) === AppInstanceState.RUNNING">
-                                <li *ngIf="shouldDisplayButton()">
-                                    <a href="{{validateURL(appInstance?.serviceAccessMethods[0].url)}}" role="button">
-                                        {{'APP_INSTANCE.GO_TO_APP_BUTTON' | translate}}
-                                    </a>
-                                </li>
-                                <li *ngIf="shouldDisplayModal()">
+                                <li>
                                     <a role="button" (click)="this.accessMethodsModal.show()">
                                         {{'APP_INSTANCE.APP_ACCESS_METHODS' | translate}}
                                     </a>
