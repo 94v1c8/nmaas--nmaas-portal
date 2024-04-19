@@ -1,0 +1,10 @@
+stages:
+  - test
+
+test:
+  stage: test
+  image: trion/ng-cli-karma:14.2.1
+  script:
+    - npm ci --force
+    - node scripts/git-version.js
+    - ng test
