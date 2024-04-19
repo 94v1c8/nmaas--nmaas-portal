@@ -12,11 +12,9 @@ test:
 
 sonar:
   stage: sonar
-  image: trion/ng-cli-karma:14.2.1
-  only:
-    - develop
+  image: trion/ng-cli:14.2.1
+#  only:
+#    - develop
   script:
     - npm ci --force
-    - chmod +x ./gradlew
-    - ./gradlew testCoverage
-    - ./gradlew -Dsonar.host.url=${SONAR_HOST} -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.projectName=${SONAR_PROJECT_NAME} -Dsonar.branch.name=develop -Dsonar.login=${SONAR_LOGIN_TOKEN} sonarqube
+    - npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.projectName=${SONAR_PROJECT_NAME} -Dsonar.branch.name=develop -Dsonar.login=${SONAR_LOGIN_TOKEN}
