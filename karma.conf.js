@@ -48,13 +48,14 @@ module.exports = function (config) {
                 }
             },
 
-            reporters: ['progress'],
+            reporters: ['progress', 'kjhtml'],
             port: 9876,
             colors: true,
             logLevel: config.LOG_WARN,
             autoWatch: false,
             browsers: ['Chrome', 'ChromeHeadless', "Chromium"],
-            singleRun: true
+            singleRun: true,
+            restartOnFileChange: false
         }
     );
 };

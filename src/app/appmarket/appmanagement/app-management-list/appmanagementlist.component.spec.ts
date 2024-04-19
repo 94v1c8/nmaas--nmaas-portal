@@ -11,6 +11,7 @@ import {ModalComponent} from '../../../shared/modal';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {MockAuthService} from '../../appmarket.component.spec';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('AppManagementListComponent', () => {
   let component: AppManagementListComponent;
@@ -39,7 +40,8 @@ describe('AppManagementListComponent', () => {
             useClass: TranslateFakeLoader
           }
         })
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
