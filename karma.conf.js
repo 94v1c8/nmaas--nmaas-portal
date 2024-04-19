@@ -33,7 +33,8 @@ module.exports = function (config) {
                 'text/x-typescript': ['ts', 'tsx']
             },
             coverageReporter: {
-                dir: 'coverage',
+                dir: require('path').join(__dirname, 'coverage'),
+                subdir: '.',
                 reporters: [
                     {type: 'html', subdir: '.'},
                     {type: 'lcovonly', subdir: '.', file: 'lcov.info'},
