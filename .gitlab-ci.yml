@@ -9,6 +9,10 @@ test:
     - npm ci --force
     - ng build
     - ng test --code-coverage --watch=false --browsers=Chrome
+  coverage: '/Lines.*?(\d+(?:\.\d+)?)%/'
+  artifacts:
+    paths:
+      - coverage/
 
 sonar:
   stage: sonar
