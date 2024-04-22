@@ -35,6 +35,7 @@ module.exports = function (config) {
             coverageReporter: {
                 dir: require('path').join(__dirname, 'coverage'),
                 subdir: '.',
+                exclude: ['**/*.spec.ts'],
                 reporters: [
                     {type: 'html', subdir: '.'},
                     {type: 'lcovonly', subdir: '.', file: 'lcov.info'},
